@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Classement</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+<h1>Classement</h1>
+<nav>
+<a href="index.html">Accueil</a>
+<a href="pronos.html">Pronostics</a>
+<a href="classement.html">Classement</a>
+</nav>
+</header>
+
+<section class="card">
+
+<table>
+<thead>
+<tr>
+<th>Joueur</th>
+<th>Pronostic validé</th>
+</tr>
+</thead>
+
+<tbody id="table"></tbody>
+
+</table>
+
+</section>
+
+<script>
+
+let data=JSON.parse(localStorage.getItem("goatF1")||[])
+
+let body=document.getElementById("table")
+
+let unique=[...new Map(data.map(d=>[d.player,d])).values()]
+
+unique.forEach(d=>{
+
+let tr=document.createElement("tr")
+
+tr.innerHTML="<td>"+d.player+"</td><td>✅</td>"
+
+body.appendChild(tr)
+
+})
+
+</script>
+
+</body>
+</html>

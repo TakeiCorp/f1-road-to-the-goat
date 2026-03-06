@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pronostics</title>
+<link rel="stylesheet" href="style.css">
+<script src="drivers.js"></script>
+</head>
+<body>
+
+<header>
+<h1>Pronostics</h1>
+<nav>
+<a href="index.html">Accueil</a>
+<a href="pronos.html">Pronostics</a>
+<a href="classement.html">Classement</a>
+</nav>
+</header>
+
+<section class="card">
+
+<label>Nom du joueur</label>
+<input id="player" placeholder="Ton nom">
+
+<h2>Qualifications</h2>
+<div id="qualif"></div>
+
+<h2>Course</h2>
+<div id="course"></div>
+
+<h2>Bonus</h2>
+<select id="fastest"></select>
+<select id="firstcorner"></select>
+<select id="dnf"></select>
+
+<button onclick="save()">Valider mon pronostic</button>
+
+</section>
+
+<script>
+
+function createSelect(id){
+let s=document.createElement("select")
+s.id=id
+drivers.forEach(d=>{
+let o=document.createElement("option")
+o.text=d
+s.add(o)
+})
+return s
+}
+
+function build(area,prefix){
+let div=document.getElementById(area)
+for(let i=1;i<=5;i++){
+let label=document.createElement("label")
+label.innerText=prefix+" "+i
+div.appendChild(label)
+div.appendChild(createSelect(prefix+i))
+}
+}
+
+build("qualif","Q")
+build("course","C")
+
+document.getElementById("fastest").replaceWith(createSelect("fastest"))
+document.getElementById("firstcorner").replaceWith(createSelect("firstcorner"))
+document.getElementById("dnf").replaceWith(createSelect("dnf"))
+
+function save(){
+
+let player=document.getElementById("player").value
+if(!player) return alert("Entre ton nom")
+
+let data=JSON.parse(localStorage.getItem("goatF1")||"[]")
+
+data.push({
+player:player,
+date:new Date().toLocaleString()
+})
+
+localStorage.setItem("goatF1",JSON.stringify(data))
+
+alert("Pronostic enregistré")
+
+}
+
+</script>
+
+</body>
+</html>
