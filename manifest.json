@@ -1,0 +1,8 @@
+{
+  "name": "F1 Road to the GOAT",
+  "short_name": "F1 GOAT",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0c0c0c",
+  "theme_color": "#e10600"
+}
