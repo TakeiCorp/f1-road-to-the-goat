@@ -1,25 +1,35 @@
-
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+
 <meta charset="UTF-8">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script src="supabase.js"></script>
-  <script src="drivers.js"></script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Pronostics</title>
+
 <link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="supabase.js"></script>
+<script src="drivers.js"></script>
+
 </head>
+
 <body>
 
 <header>
-<h1>Pronostics</h1>
+
+<h1>🏁 Pronostics</h1>
+
 <nav>
 <a href="index.html">Accueil</a>
 <a href="pronos.html">Pronostics</a>
 <a href="classement.html">Classement</a>
 </nav>
+
 </header>
+
 
 <section class="card">
 
@@ -33,113 +43,89 @@
 <div id="course"></div>
 
 <h2>Bonus</h2>
+
+<label>Meilleur tour</label>
 <select id="fastest"></select>
+
+<label>Premier virage</label>
 <select id="firstcorner"></select>
+
+<label>Abandon</label>
 <select id="dnf"></select>
 
-<button onclick="save()">Valider mon pronostic</button>
-<script>
+<br><br>
 
-function populateDrivers(){
+<button onclick="save()">Valider mon pronostic</button>
+
+</section>
+
+
+<script>
 
 const drivers = window.drivers
 
-let qualif = document.getElementById("qualif")
-let course = document.getElementById("course")
-
-for(let i=1;i<=5;i++){
-
-let selectQ = document.createElement("select")
-let selectC = document.createElement("select")
-
-drivers.forEach(driver=>{
-let opt1 = document.createElement("option")
-opt1.value = driver
-opt1.text = driver
-
-let opt2 = document.createElement("option")
-opt2.value = driver
-opt2.text = driver
-
-selectQ.appendChild(opt1)
-selectC.appendChild(opt2)
-})
-
-qualif.appendChild(selectQ)
-course.appendChild(selectC)
-
-}
-
-let fastest = document.getElementById("fastest")
-let firstcorner = document.getElementById("firstcorner")
-let dnf = document.getElementById("dnf")
-
-drivers.forEach(driver=>{
-let opt1 = document.createElement("option")
-opt1.value = driver
-opt1.text = driver
-
-let opt2 = document.createElement("option")
-opt2.value = driver
-opt2.text = driver
-
-let opt3 = document.createElement("option")
-opt3.value = driver
-opt3.text = driver
-
-fastest.appendChild(opt1)
-firstcorner.appendChild(opt2)
-dnf.appendChild(opt3)
-
-})
-
-}
-
-populateDrivers()
-
-</script>
-</section>
-
-<script>
 
 function createSelect(id){
-let s=document.createElement("select")
-s.id=id
-drivers.forEach(d=>{
-let o=document.createElement("option")
-o.text=d
-s.add(o)
+
+let select = document.createElement("select")
+select.id = id
+
+drivers.forEach(driver => {
+
+let option = document.createElement("option")
+
+option.value = driver
+option.text = driver
+
+select.appendChild(option)
+
 })
-return s
+
+return select
+
 }
 
+
 function build(area,prefix){
-let div=document.getElementById(area)
+
+let div = document.getElementById(area)
+
 for(let i=1;i<=5;i++){
-let label=document.createElement("label")
-label.innerText=prefix+" "+i
+
+let label = document.createElement("label")
+label.innerText = prefix+" "+i
+
 div.appendChild(label)
 div.appendChild(createSelect(prefix+i))
+
 }
+
 }
+
 
 build("qualif","Q")
 build("course","C")
 
+
 document.getElementById("fastest").replaceWith(createSelect("fastest"))
 document.getElementById("firstcorner").replaceWith(createSelect("firstcorner"))
 document.getElementById("dnf").replaceWith(createSelect("dnf"))
+
+
 
 async function save(){
 
 let player = document.getElementById("player").value
 
 if(!player){
+
 alert("Entre ton nom")
+
 return
+
 }
 
-const { data, error } = await supabaseClient
+const { error } = await supabaseClient
 .from("predictions")
 .insert([
 {
@@ -149,30 +135,20 @@ race: "GP"
 ])
 
 if(error){
+
 alert("Erreur enregistrement")
+
 }else{
-alert("Pronostic enregistré")
-}
-
-}
-
-let player=document.getElementById("player").value
-if(!player) return alert("Entre ton nom")
-
-let data=JSON.parse(localStorage.getItem("goatF1")||"[]")
-
-data.push({
-player:player,
-date:new Date().toLocaleString()
-})
-
-localStorage.setItem("goatF1",JSON.stringify(data))
 
 alert("Pronostic enregistré")
+
+}
 
 }
 
 </script>
 
+
 </body>
+
 </html>
