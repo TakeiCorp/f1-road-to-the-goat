@@ -71,7 +71,31 @@ document.getElementById("fastest").replaceWith(createSelect("fastest"))
 document.getElementById("firstcorner").replaceWith(createSelect("firstcorner"))
 document.getElementById("dnf").replaceWith(createSelect("dnf"))
 
-function save(){
+async function save(){
+
+let player = document.getElementById("player").value
+
+if(!player){
+alert("Entre ton nom")
+return
+}
+
+const { data, error } = await supabaseClient
+.from("predictions")
+.insert([
+{
+player_name: player,
+race: "GP"
+}
+])
+
+if(error){
+alert("Erreur enregistrement")
+}else{
+alert("Pronostic enregistré")
+}
+
+}
 
 let player=document.getElementById("player").value
 if(!player) return alert("Entre ton nom")
